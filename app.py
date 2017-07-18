@@ -16,12 +16,12 @@ from models import *
 app = Flask(__name__)
 app.config.from_object('config')
 
-# Automatically tear down SQLAlchemy.
-'''
-@app.teardown_request
-def shutdown_session(exception=None):
-    db_session.remove()
-'''
+app.config['OAUTH_CREDENTIALS'] = {
+    'facebook': {
+        'id': '369799630089985',
+        'secret': 'a1f6437f620671412c420e2d1b53d682'
+    }
+}
 
 # Login required decorator.
 '''
@@ -42,6 +42,7 @@ def login_required(test):
 
 @app.route('/')
 def home():
+    #debug
     return render_template('pages/placeholder.home.html')
 
 
@@ -50,8 +51,14 @@ def about():
     return render_template('pages/placeholder.about.html')
 
 
-@app.route('/login')
+@app.route('/login', methods=['GET', 'POST'])
 def login():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        print('********')
+        print(username)
+        print(password)
     form = LoginForm(request.form)
     return render_template('forms/login.html', form=form)
 
@@ -67,8 +74,31 @@ def forgot():
     form = ForgotForm(request.form)
     return render_template('forms/forgot.html', form=form)
 
-# Error handlers.
+@app.route('/authorize/<provider>')
+def oauth_authorize(provider):
+    if not current_user.is_anonymous():
+        return redirect(url_for('index'))
+    oauth = OAuthSignIn.get_provider(provider)
+    return oauth.authorize()
 
+@app.route('/callback/<provider>')
+def oauth_callback(provider):
+    if not current_user.is_anonymous():
+        return redirect(url_for('index'))
+    oauth = OAuthSignIn.get_provider(provider)
+    social_id, username, email = oauth.callback()
+    if social_id is None:
+        flash('Authentication failed.')
+        return redirect(url_for('index'))
+    user = User.query.filter_by(social_id=social_id).first()
+    if not user:
+        user = User(social_id=social_id, nickname=username, email=email)
+        db.session.add(user)
+        db.session.commit()
+    login_user(user, True)
+    return redirect(url_for('index'))
+
+# Error handlers.
 
 @app.errorhandler(500)
 def internal_error(error):

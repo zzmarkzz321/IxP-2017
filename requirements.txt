@@ -5,6 +5,7 @@ coverage
 jinja2
 pymongo
 Flask
+rauth
 # ecdsa
 # paramiko
 # pycrypto
