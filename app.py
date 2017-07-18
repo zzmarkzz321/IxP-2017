@@ -2,7 +2,8 @@
 # Imports
 #----------------------------------------------------------------------------#
 
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, flash, session, redirect, url_for
+import json
 import logging
 from logging import Formatter, FileHandler
 from forms import *
@@ -53,15 +54,26 @@ def about():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
-        print('********')
-        print(username)
-        print(password)
     form = LoginForm(request.form)
-    return render_template('forms/login.html', form=form)
+    if request.method == 'POST':
+        user = form.name.data
+        password = form.password.data
 
+        user_doc = get_logged_user(user, password)
+        # Failed login, re render the login and flash error
+        if user_doc[1] != 200:
+            flash('Error Logging In')
+
+        # Successful login, redirect to front page
+        else:
+            session['username'] = user_doc[0]['username']
+            session['firstname'] = user_doc[0]['firstname']
+            session['lastname'] = user_doc[0]['lastname']
+            session['routes'] = user_doc[0]['routes']
+
+            return redirect(url_for('home'))
+
+    return render_template('forms/login.html', form=form)
 
 @app.route('/register')
 def register():
@@ -74,29 +86,6 @@ def forgot():
     form = ForgotForm(request.form)
     return render_template('forms/forgot.html', form=form)
 
-@app.route('/authorize/<provider>')
-def oauth_authorize(provider):
-    if not current_user.is_anonymous():
-        return redirect(url_for('index'))
-    oauth = OAuthSignIn.get_provider(provider)
-    return oauth.authorize()
-
-@app.route('/callback/<provider>')
-def oauth_callback(provider):
-    if not current_user.is_anonymous():
-        return redirect(url_for('index'))
-    oauth = OAuthSignIn.get_provider(provider)
-    social_id, username, email = oauth.callback()
-    if social_id is None:
-        flash('Authentication failed.')
-        return redirect(url_for('index'))
-    user = User.query.filter_by(social_id=social_id).first()
-    if not user:
-        user = User(social_id=social_id, nickname=username, email=email)
-        db.session.add(user)
-        db.session.commit()
-    login_user(user, True)
-    return redirect(url_for('index'))
 
 # Error handlers.
 
