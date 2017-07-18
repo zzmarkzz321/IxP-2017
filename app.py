@@ -43,8 +43,9 @@ def login_required(test):
 
 @app.route('/')
 def home():
-    #debug
-    return render_template('pages/placeholder.home.html')
+    if session["loggedin"] != True:
+        session["loggedin"] = False
+    return render_template('pages/placeholder.home.html', loggedin=session["loggedin"])
 
 
 @app.route('/about')
@@ -62,10 +63,11 @@ def login():
         user_doc = get_logged_user(user, password)
         # Failed login, re render the login and flash error
         if user_doc[1] != 200:
-            flash('Error Logging In')
+            flash('Invalid Credentials')
 
         # Successful login, redirect to front page
         else:
+            session['loggedin'] = True
             session['username'] = user_doc[0]['username']
             session['firstname'] = user_doc[0]['firstname']
             session['lastname'] = user_doc[0]['lastname']
