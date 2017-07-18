@@ -9,6 +9,7 @@ user_collection = db['user']
 route_collection = db['route']
 location_collection = db['location']
 
+
 """
 User Collection:
 
