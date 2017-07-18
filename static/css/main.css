@@ -38,10 +38,14 @@ a {
   background: #00C1AB;
   color: #039BE5;
   text-transform: none;
+  margin-left: 70%;
 }
 
 a.add-place-btn {
 	color:#039BE5;
+}
+.btn *:hover {
+    pointer-events: none !important;
 }
 
 #share-place {
