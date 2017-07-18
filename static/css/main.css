@@ -8,11 +8,15 @@
 /*****************************************************************************
  * Main elements
  ****************************************************************************/
+* {
+font-family: 'Roboto', sans-serif;
+}
 html {
   overflow-y: scroll;
 }
 a {
   cursor: pointer;
+  font-family: 'Roboto', sans-serif;
 }
 ::selection {
   background: #555;
@@ -25,6 +29,78 @@ a {
 ::-webkit-selection {
   background: #555;
   color: #FFF;
+}
+.navbar {
+  background-color: #039BE5;
+}
+
+.add-place-btn {
+  background: #00C1AB;
+  color: #039BE5;
+  text-transform: none;
+  margin-left: 70%;
+}
+
+a.add-place-btn {
+	color:#039BE5;
+}
+.btn *:hover {
+    pointer-events: none !important;
+}
+
+#share-place {
+	margin-left: 80%;
+
+}
+#addBtn {
+	margin-left: 150%;
+	margin-top: -35%;
+}
+
+nav .brand-logo {
+	margin-left: 3%;
+	font-size: 1.5rem !important;
+	font-family: 'Roboto', sans-serif;
+
+	/*a {
+		font-size: 1rem !important;
+	}*/
+}
+
+.list-pic {
+	width: 150px;
+	height:150px;
+}
+
+.add-btn {
+	color:#039BE5;
+}
+
+.parentFlexBox {
+	display:flex;
+	display:-webkit-flex;
+	flex-direction: column;
+	justify-content: space-around;
+	width:960px;
+	margin-left: 17.5%;
+    margin-right: 17.5%;
+}
+
+.card-content {
+	width:40%;
+}
+
+.list-pic {
+	width: 200px;
+    height: 200px;
+    margin: 10%;
+}
+.card horizontal row {
+	display:flex;
+	display:-webkit-flex;
+	flex-direction: row;
+	justify-content: flex-start;
+
 }
 /* Main elements end */
 
