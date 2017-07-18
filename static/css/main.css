@@ -48,6 +48,10 @@ a.add-place-btn {
 	margin-left: 80%;
 
 }
+#addBtn {
+	margin-left: 150%;
+	margin-top: -35%;
+}
 
 nav .brand-logo {
 	margin-left: 3%;
@@ -57,6 +61,42 @@ nav .brand-logo {
 	/*a {
 		font-size: 1rem !important;
 	}*/
+}
+
+.list-pic {
+	width: 150px;
+	height:150px;
+}
+
+.add-btn {
+	color:#039BE5;
+}
+
+.parentFlexBox {
+	display:flex;
+	display:-webkit-flex;
+	flex-direction: column;
+	justify-content: space-around;
+	width:960px;
+	margin-left: 17.5%;
+    margin-right: 17.5%;
+}
+
+.card-content {
+	width:40%;
+}
+
+.list-pic {
+	width: 200px;
+    height: 200px;
+    margin: 10%;
+}
+.card horizontal row {
+	display:flex;
+	display:-webkit-flex;
+	flex-direction: row;
+	justify-content: flex-start;
+
 }
 /* Main elements end */
 

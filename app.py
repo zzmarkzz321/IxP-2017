@@ -70,6 +70,10 @@ def forgot():
 
 # Error handlers.
 
+@app.route('/list-of-locations')
+def listoflocations():
+    return render_template('layouts/list-of-locations.html')
+
 
 @app.errorhandler(500)
 def internal_error(error):
