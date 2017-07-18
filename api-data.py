@@ -10,15 +10,18 @@
     "token_type": "Bearer"
 }
 """
+
 from flask import Flask, jsonify
+from yelp.client import Client
+from yelp.oauth1_authenticator import Oauth1Authenticator
 import json
 import requests
 app = Flask(__name__)
 geo_key = "AIzaSyBUwnh3e4nK8Emj02rYmAETs3SkSAsli2s"
 places_key = "AIzaSyCiT_v1UiAVzG3Shd4c5RxXxFncu5_d9YU"
 search_url = "https://maps.googleapis.com/maps/api/place/textsearch/json"
-from yelp.client import Client
-from yelp.oauth1_authenticator import Oauth1Authenticator
+access_token = "mgE_trsR5CSJnSXU8bJXXI-wT4ks7KRY2bxOfgfsFOFvD__AwwSOpcuCRUVqskInyDaWoBBtMX3pQmfe7OinJHtc8jaMjFaIRkhih7jHDSESCOm2_NpYW_X-ZW5uWXYx"
+headers = {'Authorization': 'bearer %s' % access_token}
 """
 auth = Oauth1Authenticator(
     consumer_key="BaTsUsy-Le7IyQ5Yxd0kbw",
@@ -35,7 +38,6 @@ def coordinates():
 	search_url = ("https://maps.googleapis.com/maps/api/geocode/json?components=locality:san+francisco&key="+geo_key)
 	search_result = requests.get(search_url)
 	search_json_obj = search_result.json()
-	
 	return search_json_obj
 
 @app.route("/fetchAreas")
@@ -66,15 +68,17 @@ def yelp_key():
 @app.route("/recommendations")
 def fetchRecommendations():
 
-	term = restaurant
-	gps_coordinates = coordinates()
+	url = 'https://api.yelp.com/v3/businesses/search'
+	headers = {'Authorization': 'bearer %s' % access_token}
+	params = {'location': 'San Bruno',
+          'term': 'Japanese Restaurant',
+          'pricing_filter': '1, 2',
+          'sort_by': 'rating'
+         }
 
-	latitude = gps_coordinates['results'][0]['geometry']['location']['lat']
-	longitude = gps_coordinates['results'][0]['geometry']['location']['lng']
-
-	data = areas()
-	return data
-
+	resp = requests.get(url=url, params=params, headers=headers)
+	search_json = resp.json()
+	return jsonify(search_json)
 
 if __name__ == "__main__":
     app.run()
