@@ -53,6 +53,7 @@ a.add-place-btn {
 
 }
 
+
 nav .brand-logo {
 	margin-left: 3%;
 	font-size: 1.5rem !important;
@@ -62,6 +63,32 @@ nav .brand-logo {
 		font-size: 1rem !important;
 	}*/
 }
+.cityCard {
+  width: 200px;
+  height: 200px;
+}
+#cardPic {
+  width: 100px;
+  height: 100px;
+}
+.parentFlexBoxCity {
+  display: flex;
+  display: -webkit-flex;
+  flex-direction: row;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  margin-left: 20%;
+  margin-right: 20%;
+
+}
+#email {
+  margin-top: 2%;
+}
+#inputFieldCity {
+  margin-left: 3%;
+  margin-right: 3%;
+}
+
 /* Main elements end */
 
 

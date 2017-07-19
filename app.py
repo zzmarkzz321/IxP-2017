@@ -67,6 +67,9 @@ def forgot():
     form = ForgotForm(request.form)
     return render_template('forms/forgot.html', form=form)
 
+@app.route('/city')
+def city():
+    return render_template('layouts/city.html')
 # Error handlers.
 
 
