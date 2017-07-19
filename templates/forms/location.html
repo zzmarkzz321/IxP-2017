@@ -1,0 +1,26 @@
+{% extends 'layouts/form.html' %}
+{% block title %}Login{% endblock %}
+{% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <ul>
+        {% for message in messages %}
+            <li>{{ message }} </li>
+        {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+{% block content %}
+  <form action="/login" method="POST" class="form">
+    <h3 class="form-heading">Login <a href="{{ url_for('home') }}" title="Back to homepage"><i class="fa fa-home pull-right"></i></a></h3>
+    {{ form.name(class_ = 'form-control first-input', placeholder = form.name.label.text, required = true, autofocus = true) }}
+    {{ form.city(class_ = 'form-control first-input', placeholder = form.city.label.text, required = true, autofocus = true) }}
+    {{ form.description(class_ = 'form-control first-input', placeholder = form.description.label.text, required = true, autofocus = true) }}
+    <!--{{ form.name(class_ = 'form-control first-input', placeholder = form.name.label.text, required = true, autofocus = true) }}-->
+    <p class="pull-right"><a href="#">Register</a></p>
+    <input type="submit" value="Submit" class="btn btn-primary btn-lg btn-block">
+  </form>
+{% endblock %}
+
+
+
+

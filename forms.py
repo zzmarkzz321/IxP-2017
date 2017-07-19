@@ -3,7 +3,16 @@ from wtforms import TextField, PasswordField
 from wtforms.validators import DataRequired, EqualTo, Length
 
 # Set your classes here.
-
+class LocationForm(Form):
+    name = TextField(
+        'Ex: Hidden cove', validators=[DataRequired(), Length(min=6, max=25)]
+    )
+    city = TextField(
+        'Ex: Santa Clara', validators=[DataRequired(), Length(min=6, max=25)]
+    )
+    description = TextField(
+        'Ex: Found a secret cove in the city!', validators=[DataRequired()]
+    )
 
 class RegisterForm(Form):
     name = TextField(
