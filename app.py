@@ -17,13 +17,6 @@ from models import *
 app = Flask(__name__)
 app.config.from_object('config')
 
-app.config['OAUTH_CREDENTIALS'] = {
-    'facebook': {
-        'id': '369799630089985',
-        'secret': 'a1f6437f620671412c420e2d1b53d682'
-    }
-}
-
 # Login required decorator.
 '''
 def login_required(test):
@@ -52,6 +45,10 @@ def home():
 def about():
     return render_template('pages/placeholder.about.html')
 
+@app.route('/profile')
+def profile():
+    # Need to present the useres data here
+    return render_template('pages/profile.html')
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -77,17 +74,19 @@ def login():
 
     return render_template('forms/login.html', form=form)
 
-@app.route('/register')
-def register():
-    form = RegisterForm(request.form)
-    return render_template('forms/register.html', form=form)
+@app.route('/logout')
+def logout():
+    session.clear()
+    return redirect(url_for('home'))
 
+@app.route('/create-location', methods=['POST', 'GET'])
+def createLocation():
+    form = LocationForm(request.form)
+    if request.method == 'POST':
+        # if we have successfully created the location, redirect to the users profile
+        return redirect(url_for('profile'))
 
-@app.route('/forgot')
-def forgot():
-    form = ForgotForm(request.form)
-    return render_template('forms/forgot.html', form=form)
-
+    return render_template('forms/location.html', form=form)
 
 @app.route('/list-of-locations')
 def listoflocations():

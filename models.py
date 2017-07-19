@@ -40,16 +40,14 @@ Updates the user document (except route)
 """
 def update_user(username, field, value):
 
-    if session["loggedin"]:
+    if session["loggedin"] == True:
         print('logged in')
 
         # grab current user document
-        user = user_collection.find_one({"username": username}
+        user = user_collection.find_one({"username": username})
 
-        else:
-        # update user field
-            user[field] = value
-            user_collection.update_one({"username": username}, {"$set": user}, upsert=False)
+        user[field] = value
+        user_collection.update_one({"username": username}, {"$set": user}, upsert=False)
 
 """
 Adds a route to a users route array
@@ -72,6 +70,8 @@ Grab routes pertaining to the user
 
 @protected
 @param: route_id
+
+@return: an aray of all route id's which can be used to fetch the locations within the route
 """
 def get_routes(routes):
     # query the route based on the route_id
@@ -91,11 +91,14 @@ Grabs available locations for travel
 @protected
 @param: location_id
 """
-def get_locations(location_id):
+def get_locations(locations):
     # query all locations based on the location_id
+    locations = []
 
+    for location_id in locations:
+        locations.append(location_collection.find_one({"_id": location_id}))
     # return the array of locations 
-    return
+    return locations
 
 
 """
